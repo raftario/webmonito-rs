@@ -1,4 +1,5 @@
 verbose = true
+timeout = 60
 urls = [
     "https://google.com",
     "https://rust-lang.org",

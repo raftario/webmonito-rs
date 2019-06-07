@@ -23,17 +23,16 @@ pub mod config {
     #[derive(Deserialize, Debug)]
     pub struct Config {
         verbose: Option<bool>,
+        timeout: u32,
         urls: Vec<String>,
         emails: Option<Vec<Email>>,
         pings: Option<Vec<Ping>>,
     }
 
     impl Config {
-        pub fn from_file(path: &str, verbose: bool) -> Result<Config, Box<dyn Error>> {
+        pub fn from_file(path: &str) -> Result<Config, Box<dyn Error>> {
             let contents = fs::read_to_string(path)?;
-            let mut config: Config = toml::from_str(&contents)?;
-            // If verbose is not specified in config file, use command line argument value.
-            config.verbose = Some(config.verbose.unwrap_or(verbose));
+            let config: Config = toml::from_str(&contents)?;
 
             Ok(config)
         }
@@ -49,7 +48,7 @@ pub mod config {
             #[test]
             #[should_panic]
             fn missing() {
-                let config = Config::from_file("missing.toml", false)
+                let config = Config::from_file("missing_config.toml")
                     .expect("Config parsing from missing file failed");
                 println!("Config: {:#?}", config);
             }
@@ -57,14 +56,14 @@ pub mod config {
             #[test]
             #[should_panic]
             fn invalid() {
-                let config = Config::from_file("Cargo.toml", false)
+                let config = Config::from_file("Cargo.toml")
                     .expect("Config parsing from invalid file failed");
                 println!("Config: {:#?}", config);
             }
 
             #[test]
             fn ok() {
-                let config = Config::from_file("config.toml", false)
+                let config = Config::from_file("example_config.toml")
                     .expect("Config parsing from valid file failed");
                 println!("Config: {:#?}", config);
             }
