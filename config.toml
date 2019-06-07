@@ -1,0 +1,19 @@
+verbose = true
+urls = [
+    "https://google.com",
+    "https://rust-lang.org",
+]
+
+[[emails]]
+address = "raphael_theriault@outlook.com"
+content = "Hello, World!"
+
+[[emails]]
+address = "test@example.com"
+
+[[pings]]
+url = "https://api.github.com"
+content = "ping"
+
+[[pings]]
+url = "https://example.com"
