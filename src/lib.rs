@@ -4,7 +4,6 @@ extern crate toml;
 
 pub mod config {
     use std::error::Error;
-    use std::fmt::Debug;
     use std::fs;
     use clap::ArgMatches;
     use toml;
