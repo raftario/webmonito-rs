@@ -4,6 +4,10 @@ version = "0.1.0"
 authors = ["Raphaël Thériault <raphael_theriault@outlook.com>"]
 description = "Monitors websites and sends emails and web requests when they change"
 edition = "2018"
+homepage = "https://github.com/raftario/webmonito-rs#readme"
+repository = "https://github.com/raftario/webmonito-rs"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 clap = "~2.33"
