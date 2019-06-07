@@ -1,7 +1,7 @@
 extern crate clap;
 
 use clap::{Arg, App};
-use webmonitors::config;
+use webmonitors::config::Config;
 
 fn main() {
     let matches = App::new(clap::crate_name!())
@@ -19,7 +19,7 @@ fn main() {
             .takes_value(true)
             .value_name("FILE")
             .index(1)
-            .conflicts_with_all(&["url", "email", "ping"]))
+            .required_unless("urls"))
         .arg(Arg::with_name("urls")
             .short("u")
             .long("urls")
@@ -27,7 +27,9 @@ fn main() {
             .takes_value(true)
             .value_name("URL")
             .multiple(true)
-            .display_order(1))
+            .display_order(1)
+            .requires("timeout")
+            .required_unless("config"))
         .arg(Arg::with_name("timeout")
             .short("t")
             .long("timeout")
@@ -35,7 +37,8 @@ fn main() {
             .takes_value(true)
             .value_name("TIMEOUT")
             .display_order(2)
-            .requires("url"))
+            .requires("urls")
+            .required_unless("config"))
         .arg(Arg::with_name("emails")
             .short("e")
             .long("emails")
@@ -44,7 +47,7 @@ fn main() {
             .value_name("EMAIL")
             .multiple(true)
             .display_order(3)
-            .requires("url"))
+            .requires("urls"))
         .arg(Arg::with_name("pings")
             .short("p")
             .long("pings")
@@ -53,13 +56,13 @@ fn main() {
             .value_name("URL")
             .multiple(true)
             .display_order(4)
-            .requires("url"))
+            .requires("urls"))
         .after_help(
             "Either pass a config file or pass desired command line options.\n\
-            If both are provided, command line options will override or add up to the ones specified in the config file.\n\
-            If none are provided, the program will look for a 'example_config.toml' file in the current directory."
+            If both are provided, command line options will override or add up to the ones specified in the config file."
         )
         .get_matches();
 
-    let verbose = matches.is_present("verbose");
+    let config = Config::new(matches).unwrap();
+    println!("Config: {:#?}", config);
 }
