@@ -58,8 +58,6 @@ pub mod config {
             // Override verbose
             if matches.is_present("verbose") {
                 config.verbose = Some(true);
-            } else if let None = config.verbose {
-                config.verbose = Some(false);
             }
 
             // Override timeout
@@ -112,6 +110,22 @@ pub mod config {
             }
 
             Ok(config)
+        }
+
+        pub fn verbose(&self) -> &bool {
+            let verbose = &self.verbose;
+            match verbose {
+                Some(v) => v,
+                None => &false,
+            }
+        }
+
+        pub fn timeout(&self) -> &u32 {
+            &self.timeout
+        }
+
+        pub fn urls(&self) -> &Vec<String> {
+            &self.urls
         }
     }
 
