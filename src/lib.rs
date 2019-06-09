@@ -123,6 +123,36 @@ pub mod config {
         pub fn urls(&self) -> &Vec<String> {
             &self.urls
         }
+
+        pub fn emails(&self) -> Vec<(String, String)> {
+            match &self.emails {
+                Some(v) => {
+                    v
+                        .iter()
+                        .map(|e| (
+                            e.address.clone(),
+                            e.content.clone().unwrap_or("".to_string()),
+                        ))
+                        .collect()
+                },
+                None => Vec::new(),
+            }
+        }
+
+        pub fn pings(&self) -> Vec<(String, String)> {
+            match &self.pings {
+                Some(v) => {
+                    v
+                        .iter()
+                        .map(|p| (
+                            p.url.clone(),
+                            p.content.clone().unwrap_or("".to_string()),
+                        ))
+                        .collect()
+                },
+                None => Vec::new(),
+            }
+        }
     }
 
     #[cfg(test)]
