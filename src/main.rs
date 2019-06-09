@@ -1,10 +1,10 @@
 extern crate clap;
 
 use clap::{Arg, App};
-use webmonitors::config::Config;
+use wbmrs::config::Config;
 
 fn main() {
-    let matches = App::new(clap::crate_name!())
+    let matches = App::new("webmonito-rs")
         .version(clap::crate_version!())
         .author(clap::crate_authors!())
         .about(clap::crate_description!())
@@ -18,8 +18,7 @@ fn main() {
             .help("Sets a custom config file")
             .takes_value(true)
             .value_name("FILE")
-            .index(1)
-            .required_unless("urls"))
+            .index(1))
         .arg(Arg::with_name("urls")
             .short("u")
             .long("urls")
@@ -28,7 +27,6 @@ fn main() {
             .value_name("URL")
             .multiple(true)
             .display_order(1)
-            .requires("timeout")
             .required_unless("config"))
         .arg(Arg::with_name("timeout")
             .short("t")
@@ -37,7 +35,6 @@ fn main() {
             .takes_value(true)
             .value_name("TIMEOUT")
             .display_order(2)
-            .requires("urls")
             .required_unless("config"))
         .arg(Arg::with_name("emails")
             .short("e")
@@ -46,8 +43,7 @@ fn main() {
             .takes_value(true)
             .value_name("EMAIL")
             .multiple(true)
-            .display_order(3)
-            .requires("urls"))
+            .display_order(3))
         .arg(Arg::with_name("pings")
             .short("p")
             .long("pings")
@@ -55,8 +51,7 @@ fn main() {
             .takes_value(true)
             .value_name("URL")
             .multiple(true)
-            .display_order(4)
-            .requires("urls"))
+            .display_order(4))
         .after_help(
             "Either pass a config file or pass desired command line options.\n\
             If both are provided, command line options will override or add up to the ones specified in the config file."

@@ -1,5 +1,5 @@
 [package]
-name = "webmonitors"
+name = "wbmrs"
 version = "0.1.0"
 authors = ["Raphaël Thériault <raphael_theriault@outlook.com>"]
 description = "Monitors websites and sends emails and web requests when they change"

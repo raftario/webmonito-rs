@@ -112,16 +112,12 @@ pub mod config {
             Ok(config)
         }
 
-        pub fn verbose(&self) -> &bool {
-            let verbose = &self.verbose;
-            match verbose {
-                Some(v) => v,
-                None => &false,
-            }
+        pub fn verbose(&self) -> bool {
+            self.verbose.unwrap_or(false)
         }
 
-        pub fn timeout(&self) -> &u32 {
-            &self.timeout
+        pub fn timeout(&self) -> u32 {
+            self.timeout
         }
 
         pub fn urls(&self) -> &Vec<String> {
