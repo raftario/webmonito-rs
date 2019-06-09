@@ -1,7 +1,10 @@
+extern crate clap;
+extern crate serde_derive;
+extern crate toml;
+
 use std::error::Error;
 use std::fs;
 use clap::ArgMatches;
-use toml;
 use serde_derive::Deserialize;
 
 #[derive(Deserialize, Debug)]
