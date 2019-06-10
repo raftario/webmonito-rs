@@ -1,14 +1,22 @@
 extern crate crypto;
 extern crate reqwest;
 
+use std::collections::HashMap;
 use std::error::Error;
 use crypto::digest::Digest;
 use crypto::sha1::Sha1;
 
-pub fn hash_list(urls: &Vec<String>) -> Vec<(&str, String)> {
-    urls.iter()
-        .map(|u| (&u[..], String::new()))
-        .collect()
+pub fn hash_list(urls: &Vec<String>) -> HashMap<String, String> {
+    let mut list = HashMap::new();
+
+    for url in urls {
+        list.insert(
+            url.clone(),
+            String::new(),
+        );
+    }
+
+    list
 }
 
 fn contents(url: &str) -> Result<String, Box<dyn Error>> {
@@ -40,13 +48,18 @@ mod tests {
         #[test]
         fn valid() {
             let urls = vec![
-                String::from("https://www.rust-lang.org/"),
-                String::from("https://docs.rs/"),
+                "https://www.rust-lang.org/".to_string(),
+                "https://docs.rs/".to_string(),
             ];
-            let expected = vec![
-                ("https://www.rust-lang.org/", String::new()),
-                ("https://docs.rs/", String::new()),
-            ];
+            let mut expected = HashMap::new();
+            expected.insert(
+                "https://www.rust-lang.org/".to_string(),
+                String::new(),
+            );
+            expected.insert(
+                "https://docs.rs/".to_string(),
+                String::new(),
+            );
 
             assert_eq!(hash_list(&urls), expected)
         }
