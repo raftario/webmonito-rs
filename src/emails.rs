@@ -6,16 +6,13 @@ use std::error::Error;
 
 pub fn send(
     sender: &mut SendmailTransport,
-    from: String,
-    to: Vec<String>,
+    from: &str,
+    to: &str,
     message: &str,
     url: &str,
 ) -> Result<(), Box<dyn Error>> {
-    let from = Some(EmailAddress::new(from)?);
-    let to = to
-        .iter()
-        .map(|f| EmailAddress::new(f.clone()).unwrap_or(from.clone().unwrap()))
-        .collect();
+    let from = Some(EmailAddress::new(from.to_string())?);
+    let to = vec![EmailAddress::new(to.to_string())?];
 
     let email = SendableEmail::new(
         Envelope::new(from, to).unwrap(),
@@ -39,8 +36,8 @@ mod tests {
             let mut sender = SendmailTransport::new();
             send(
                 &mut sender,
-                "example@example.com".to_string(),
-                vec!["example@example.com".to_string()],
+                "example@example.com",
+                "example@example.com",
                 "test",
                 "https://www.google.com/",
             )
@@ -54,8 +51,8 @@ mod tests {
             let mut sender = SendmailTransport::new();
             send(
                 &mut sender,
-                "qwerty".to_string(),
-                vec!["qwerty".to_string()],
+                "qwerty",
+                "qwerty",
                 "test",
                 "https://www.google.com/",
             )

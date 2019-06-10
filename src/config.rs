@@ -26,7 +26,7 @@ pub struct Config {
     pub urls: Vec<String>,
     pub emails: Option<Vec<Email>>,
     pub pings: Option<Vec<Ping>>,
-    pub sender: Option<String>
+    pub sender: Option<String>,
 }
 
 impl Config {
