@@ -8,24 +8,24 @@ use clap::ArgMatches;
 use serde_derive::Deserialize;
 
 #[derive(Deserialize, Debug)]
-struct Email {
-    address: String,
-    content: Option<String>,
+pub struct Email {
+    pub address: String,
+    pub content: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
-struct Ping {
-    url: String,
-    content: Option<String>,
+pub struct Ping {
+    pub url: String,
+    pub content: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
-    verbose: Option<bool>,
-    timeout: u32,
-    urls: Vec<String>,
-    emails: Option<Vec<Email>>,
-    pings: Option<Vec<Ping>>,
+    pub verbose: Option<bool>,
+    pub timeout: u32,
+    pub urls: Vec<String>,
+    pub emails: Option<Vec<Email>>,
+    pub pings: Option<Vec<Ping>>,
 }
 
 impl Config {
@@ -109,48 +109,6 @@ impl Config {
 
         Ok(config)
     }
-
-    pub fn verbose(&self) -> bool {
-        self.verbose.unwrap_or(false)
-    }
-
-    pub fn timeout(&self) -> u32 {
-        self.timeout
-    }
-
-    pub fn urls(&self) -> &Vec<String> {
-        &self.urls
-    }
-
-    pub fn emails(&self) -> Vec<(String, String)> {
-        match &self.emails {
-            Some(v) => {
-                v
-                    .iter()
-                    .map(|e| (
-                        e.address.clone(),
-                        e.content.clone().unwrap_or(String::new()),
-                    ))
-                    .collect()
-            },
-            None => Vec::new(),
-        }
-    }
-
-    pub fn pings(&self) -> Vec<(String, String)> {
-        match &self.pings {
-            Some(v) => {
-                v
-                    .iter()
-                    .map(|p| (
-                        p.url.clone(),
-                        p.content.clone().unwrap_or(String::new()),
-                    ))
-                    .collect()
-            },
-            None => Vec::new(),
-        }
-    }
 }
 
 #[cfg(test)]
@@ -196,25 +154,14 @@ mod tests {
 
             let urls: Vec<String> = Vec::new();
             assert_eq!(config.urls, urls);
-        }
-    }
 
-    mod getters {
-        use super::*;
+            if let None = config.emails {} else {
+                panic!("Emails should be empty")
+            }
 
-        #[test]
-        fn valid() {
-            let config = Config::from_defaults();
-            println!("Config: {:#?}", config);
-            assert_eq!(config.verbose(), false);
-            assert_eq!(config.timeout, 60);
-
-            let urls: Vec<String> = Vec::new();
-            assert_eq!(config.urls(), &urls);
-
-            let emails_pings: Vec<(String, String)> = Vec::new();
-            assert_eq!(config.emails(), emails_pings);
-            assert_eq!(config.pings(), emails_pings);
+            if let None = config.pings {} else {
+                panic!("Pings should be empty")
+            }
         }
     }
 }
