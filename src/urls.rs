@@ -23,7 +23,7 @@ fn contents(url: &str) -> Result<String, Box<dyn Error>> {
     Ok(reqwest::get(url)?.text()?)
 }
 
-pub fn compare(url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
+fn compare(url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
     let new_contents = contents(url)?;
     let mut hasher = Sha1::new();
 
@@ -36,6 +36,15 @@ pub fn compare(url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> 
     } else {
         Ok(Some(new_hash))
     }
+}
+
+pub fn compare_all(list: &mut HashMap<String, String>) -> Result<(), Box<dyn Error>> {
+    for (k, v) in list.clone().iter() {
+        if let Some(r) = compare(k, v)? {
+            list.insert(k.clone(), r);
+        }
+    }
+    Ok(())
 }
 
 #[cfg(test)]
@@ -131,6 +140,30 @@ mod tests {
                     panic!("Hash should be different")
                 },
             }
+        }
+    }
+
+    mod compare_all {
+        use super::*;
+
+        #[test]
+        #[ignore]
+        fn different() {
+            let mut list = HashMap::new();
+            list.insert(
+                "https://www.rust-lang.org/".to_string(),
+                String::new(),
+            );
+            list.insert(
+                "https://docs.rs/".to_string(),
+                String::new(),
+            );
+            let old_list = list.clone();
+
+            compare_all(&mut list).unwrap();
+            println!("New list: {:#?}", list);
+
+            assert_ne!(list, old_list);
         }
     }
 }
