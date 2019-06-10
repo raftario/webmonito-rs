@@ -26,6 +26,7 @@ pub struct Config {
     pub urls: Vec<String>,
     pub emails: Option<Vec<Email>>,
     pub pings: Option<Vec<Ping>>,
+    pub sender: Option<String>
 }
 
 impl Config {
@@ -36,6 +37,7 @@ impl Config {
             urls: Vec::new(),
             emails: None,
             pings: None,
+            sender: None,
         }
     }
 
@@ -161,6 +163,11 @@ mod tests {
             if let None = config.pings {
             } else {
                 panic!("Pings should be empty")
+            }
+
+            if let None = config.sender {
+            } else {
+                panic!("Sender should be empty")
             }
         }
     }

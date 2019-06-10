@@ -4,6 +4,7 @@ urls = [
     "https://google.com",
     "https://rust-lang.org",
 ]
+sender = "wbmrs@raphaeltheriault.com"
 
 [[emails]]
 address = "raphael_theriault@outlook.com"
