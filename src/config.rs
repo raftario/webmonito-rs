@@ -129,7 +129,7 @@ impl Config {
                     .iter()
                     .map(|e| (
                         e.address.clone(),
-                        e.content.clone().unwrap_or("".to_string()),
+                        e.content.clone().unwrap_or(String::new()),
                     ))
                     .collect()
             },
@@ -144,7 +144,7 @@ impl Config {
                     .iter()
                     .map(|p| (
                         p.url.clone(),
-                        p.content.clone().unwrap_or("".to_string()),
+                        p.content.clone().unwrap_or(String::new()),
                     ))
                     .collect()
             },
