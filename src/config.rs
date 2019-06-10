@@ -2,10 +2,10 @@ extern crate clap;
 extern crate serde_derive;
 extern crate toml;
 
-use std::error::Error;
-use std::fs;
 use clap::ArgMatches;
 use serde_derive::Deserialize;
+use std::error::Error;
+use std::fs;
 
 #[derive(Deserialize, Debug)]
 pub struct Email {
@@ -60,9 +60,7 @@ impl Config {
 
         // Override timeout
         if matches.is_present("timeout") {
-            config.timeout = matches.value_of("timeout")
-                .unwrap()
-                .parse()?;
+            config.timeout = matches.value_of("timeout").unwrap().parse()?;
         }
 
         // Append urls
@@ -129,8 +127,8 @@ mod tests {
         #[test]
         #[should_panic]
         fn invalid() {
-            let config = Config::from_file("Cargo.toml")
-                .expect("Config parsing from invalid file failed");
+            let config =
+                Config::from_file("Cargo.toml").expect("Config parsing from invalid file failed");
             println!("Config: {:#?}", config);
         }
 
@@ -155,11 +153,13 @@ mod tests {
             let urls: Vec<String> = Vec::new();
             assert_eq!(config.urls, urls);
 
-            if let None = config.emails {} else {
+            if let None = config.emails {
+            } else {
                 panic!("Emails should be empty")
             }
 
-            if let None = config.pings {} else {
+            if let None = config.pings {
+            } else {
                 panic!("Pings should be empty")
             }
         }

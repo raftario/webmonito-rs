@@ -13,12 +13,7 @@ pub fn send(
     json.insert("url", url);
     json.insert("message", message);
 
-    Ok(
-        client.post(ping_url)
-            .json(&json)
-            .send()?
-            .text()?
-    )
+    Ok(client.post(ping_url).json(&json).send()?.text()?)
 }
 
 #[cfg(test)]
@@ -36,8 +31,9 @@ mod tests {
                 &client,
                 "https://api.github.com/",
                 "Ping!",
-                "https://www.google.com/"
-            ).unwrap();
+                "https://www.google.com/",
+            )
+            .unwrap();
             println!("Response: {}", result);
         }
 
@@ -46,12 +42,7 @@ mod tests {
         #[should_panic]
         fn invalid() {
             let client = reqwest::Client::new();
-            let result = send(
-                &client,
-                "qwerty",
-                "Ping!",
-                "https://www.google.com/"
-            ).unwrap();
+            let result = send(&client, "qwerty", "Ping!", "https://www.google.com/").unwrap();
             println!("Response: {}", result);
         }
     }

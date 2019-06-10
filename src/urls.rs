@@ -1,33 +1,30 @@
 extern crate crypto;
 extern crate reqwest;
 
-use std::collections::HashMap;
-use std::error::Error;
 use crypto::digest::Digest;
 use crypto::sha1::Sha1;
+use std::collections::HashMap;
+use std::error::Error;
 
 pub fn hash_list(urls: &Vec<String>) -> HashMap<String, String> {
     let mut list = HashMap::new();
 
     for url in urls {
-        list.insert(
-            url.clone(),
-            String::new(),
-        );
+        list.insert(url.clone(), String::new());
     }
 
     list
 }
 
 fn contents(client: &reqwest::Client, url: &str) -> Result<String, Box<dyn Error>> {
-    Ok(
-        client.get(url)
-            .send()?
-            .text()?
-    )
+    Ok(client.get(url).send()?.text()?)
 }
 
-fn compare(client: &reqwest::Client, url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
+fn compare(
+    client: &reqwest::Client,
+    url: &str,
+    hash: &str,
+) -> Result<Option<String>, Box<dyn Error>> {
     let new_contents = contents(&client, url)?;
     let mut hasher = Sha1::new();
 
@@ -68,14 +65,8 @@ mod tests {
                 "https://docs.rs/".to_string(),
             ];
             let mut expected = HashMap::new();
-            expected.insert(
-                "https://www.rust-lang.org/".to_string(),
-                String::new(),
-            );
-            expected.insert(
-                "https://docs.rs/".to_string(),
-                String::new(),
-            );
+            expected.insert("https://www.rust-lang.org/".to_string(), String::new());
+            expected.insert("https://docs.rs/".to_string(), String::new());
 
             assert_eq!(hash_list(&urls), expected)
         }
@@ -116,17 +107,16 @@ mod tests {
 
             println!("Hash: {}", rust_hash);
 
-            let comparison = compare(&client, "https://www.rust-lang.org/", &rust_hash)
-                .unwrap();
+            let comparison = compare(&client, "https://www.rust-lang.org/", &rust_hash).unwrap();
 
             match comparison {
                 Some(h) => {
                     println!("New hash: {}", h);
                     panic!("Hash should be the same");
-                },
+                }
                 None => {
                     println!("New hash: {}", rust_hash);
-                },
+                }
             }
         }
 
@@ -141,17 +131,16 @@ mod tests {
 
             println!("Hash: {}", rust_hash);
 
-            let comparison = compare(&client, "https://docs.rs/", &rust_hash)
-                .unwrap();
+            let comparison = compare(&client, "https://docs.rs/", &rust_hash).unwrap();
 
             match comparison {
                 Some(h) => {
                     println!("New hash: {}", h);
-                },
+                }
                 None => {
                     println!("New hash: {}", rust_hash);
                     panic!("Hash should be different")
-                },
+                }
             }
         }
     }
@@ -163,14 +152,8 @@ mod tests {
         #[ignore]
         fn different() {
             let mut list = HashMap::new();
-            list.insert(
-                "https://www.rust-lang.org/".to_string(),
-                String::new(),
-            );
-            list.insert(
-                "https://docs.rs/".to_string(),
-                String::new(),
-            );
+            list.insert("https://www.rust-lang.org/".to_string(), String::new());
+            list.insert("https://docs.rs/".to_string(), String::new());
             let old_list = list.clone();
 
             compare_all(&mut list).unwrap();

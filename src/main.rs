@@ -1,6 +1,6 @@
 extern crate clap;
 
-use clap::{Arg, App};
+use clap::{App, Arg};
 use wbmrs::config::Config;
 
 fn main() {
