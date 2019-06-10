@@ -20,7 +20,11 @@ pub fn hash_list(urls: &Vec<String>) -> HashMap<String, String> {
 }
 
 fn contents(client: &reqwest::Client, url: &str) -> Result<String, Box<dyn Error>> {
-    Ok(client.get(url).send()?.text()?)
+    Ok(
+        client.get(url)
+            .send()?
+            .text()?
+    )
 }
 
 fn compare(client: &reqwest::Client, url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
