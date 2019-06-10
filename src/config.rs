@@ -177,7 +177,7 @@ mod tests {
         }
 
         #[test]
-        fn ok() {
+        fn valid() {
             let config = Config::from_file("example_config.toml")
                 .expect("Config parsing from valid file failed");
             println!("Config: {:#?}", config);
@@ -188,7 +188,7 @@ mod tests {
         use super::*;
 
         #[test]
-        fn ok() {
+        fn valid() {
             let config = Config::from_defaults();
             println!("Config: {:#?}", config);
             assert_eq!(config.verbose, Some(false));
@@ -203,7 +203,7 @@ mod tests {
         use super::*;
 
         #[test]
-        fn defaults() {
+        fn valid() {
             let config = Config::from_defaults();
             println!("Config: {:#?}", config);
             assert_eq!(config.verbose(), false);
