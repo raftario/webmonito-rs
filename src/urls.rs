@@ -19,12 +19,12 @@ pub fn hash_list(urls: &Vec<String>) -> HashMap<String, String> {
     list
 }
 
-fn contents(url: &str) -> Result<String, Box<dyn Error>> {
-    Ok(reqwest::get(url)?.text()?)
+fn contents(client: &reqwest::Client, url: &str) -> Result<String, Box<dyn Error>> {
+    Ok(client.get(url).send()?.text()?)
 }
 
-fn compare(url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
-    let new_contents = contents(url)?;
+fn compare(client: &reqwest::Client, url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
+    let new_contents = contents(&client, url)?;
     let mut hasher = Sha1::new();
 
     hasher.input_str(&new_contents);
@@ -39,11 +39,14 @@ fn compare(url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
 }
 
 pub fn compare_all(list: &mut HashMap<String, String>) -> Result<(), Box<dyn Error>> {
+    let client = reqwest::Client::new();
+
     for (k, v) in list.clone().iter() {
-        if let Some(r) = compare(k, v)? {
+        if let Some(r) = compare(&client, k, v)? {
             list.insert(k.clone(), r);
         }
     }
+
     Ok(())
 }
 
@@ -80,7 +83,8 @@ mod tests {
         #[test]
         #[ignore]
         fn valid() {
-            let result = contents("https://www.rust-lang.org/").unwrap();
+            let client = reqwest::Client::new();
+            let result = contents(&client, "https://www.rust-lang.org/").unwrap();
             println!("Contents: {}", result);
         }
 
@@ -88,7 +92,8 @@ mod tests {
         #[ignore]
         #[should_panic]
         fn invalid() {
-            let result = contents("qwerty").unwrap();
+            let client = reqwest::Client::new();
+            let result = contents(&client, "qwerty").unwrap();
             println!("Contents: {}", result);
         }
     }
@@ -99,13 +104,15 @@ mod tests {
         #[test]
         #[ignore]
         fn same() {
-            let rust_hash = compare("https://www.rust-lang.org/", "")
+            let client = reqwest::Client::new();
+
+            let rust_hash = compare(&client, "https://www.rust-lang.org/", "")
                 .unwrap()
                 .unwrap();
 
             println!("Hash: {}", rust_hash);
 
-            let comparison = compare("https://www.rust-lang.org/", &rust_hash)
+            let comparison = compare(&client, "https://www.rust-lang.org/", &rust_hash)
                 .unwrap();
 
             match comparison {
@@ -122,13 +129,15 @@ mod tests {
         #[test]
         #[ignore]
         fn different() {
-            let rust_hash = compare("https://www.rust-lang.org/", "")
+            let client = reqwest::Client::new();
+
+            let rust_hash = compare(&client, "https://www.rust-lang.org/", "")
                 .unwrap()
                 .unwrap();
 
             println!("Hash: {}", rust_hash);
 
-            let comparison = compare("https://docs.rs/", &rust_hash)
+            let comparison = compare(&client, "https://docs.rs/", &rust_hash)
                 .unwrap();
 
             match comparison {
