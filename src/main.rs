@@ -71,4 +71,5 @@ fn main() {
     println!("urls: {:#?}", urls);
     println!("emails: {:#?}", emails);
     println!("pings: {:#?}", pings);
+    println!("urls: {:#?}", wbmrs::urls::hash_list(&urls));
 }

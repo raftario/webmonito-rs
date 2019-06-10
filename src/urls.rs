@@ -5,11 +5,14 @@ use std::error::Error;
 use crypto::digest::Digest;
 use crypto::sha1::Sha1;
 
+pub fn hash_list(urls: &Vec<String>) -> Vec<(&str, String)> {
+    urls.iter()
+        .map(|u| (&u[..], String::new()))
+        .collect()
+}
+
 fn contents(url: &str) -> Result<String, Box<dyn Error>> {
-    Ok(
-        reqwest::get(url)?
-        .text()?
-    )
+    Ok(reqwest::get(url)?.text()?)
 }
 
 pub fn compare(url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> {
@@ -30,6 +33,24 @@ pub fn compare(url: &str, hash: &str) -> Result<Option<String>, Box<dyn Error>> 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    mod hash_list {
+        use super::*;
+
+        #[test]
+        fn valid() {
+            let urls = vec![
+                String::from("https://www.rust-lang.org/"),
+                String::from("https://docs.rs/"),
+            ];
+            let expected = vec![
+                ("https://www.rust-lang.org/", String::new()),
+                ("https://docs.rs/", String::new()),
+            ];
+
+            assert_eq!(hash_list(&urls), expected)
+        }
+    }
 
     mod contents {
         use super::*;
