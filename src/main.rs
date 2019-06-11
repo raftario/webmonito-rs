@@ -1,7 +1,7 @@
 extern crate clap;
 
 use clap::{App, Arg};
-use wbmrs::config::Config;
+use wbmrs::run;
 
 fn main() {
     let matches = App::new("webmonito-rs")
@@ -58,18 +58,5 @@ fn main() {
         )
         .get_matches();
 
-    let config = Config::new(matches).unwrap();
-    println!("Config: {:#?}", config);
-
-    let verbose = config.verbose;
-    let timeout = config.timeout;
-    let urls = config.urls;
-    let emails = config.emails;
-    let pings = config.pings;
-    println!("verbose: {:#?}", verbose);
-    println!("timeout: {:#?}", timeout);
-    println!("urls: {:#?}", urls);
-    println!("emails: {:#?}", emails);
-    println!("pings: {:#?}", pings);
-    println!("urls: {:#?}", wbmrs::urls::hash_list(&urls));
+    run(matches);
 }
