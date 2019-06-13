@@ -83,7 +83,7 @@ pub fn run(matches: clap::ArgMatches) {
                                 &mut transport,
                                 match &config.sender {
                                     Some(s) => s,
-                                    None => "wbmrs@wbmrs.com",
+                                    None => "wbmrs@localhost",
                                 },
                                 &email.address,
                                 match &email.content {
