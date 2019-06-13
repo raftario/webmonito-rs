@@ -5,6 +5,6 @@ os:
 cache: cargo
 script:
   - cargo test -- --nocapture
-  - cargo test -- --nocapture --ignored
+  - cargo test -- --nocapture --ignored || true
   - cargo build --release
-  - curl --upload-file ./target/release/wbmrs "https://transfer.sh/wbmrs-${TRAVIS_OS_NAME}"
+  - curl -v --upload-file ./target/release/wbmrs "https://transfer.sh/wbmrs-${TRAVIS_OS_NAME}"
