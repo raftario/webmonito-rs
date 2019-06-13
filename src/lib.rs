@@ -53,7 +53,6 @@ pub fn run(matches: clap::ArgMatches) {
                     eprintln!("Request error for {}: {}", &k, e.to_string());
                     None
                 });
-                verbose_println(verbose, &format!("  New hash for {} obtained.", &k));
 
                 if let Some(r) = hash {
                     println!("  Page at {} has changed", &k);
@@ -107,6 +106,8 @@ pub fn run(matches: clap::ArgMatches) {
                             );
                         }
                     }
+                } else {
+                    verbose_println(verbose, &format!("  Page at {} has not changed", &k));
                 }
             }
         }
