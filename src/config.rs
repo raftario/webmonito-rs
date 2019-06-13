@@ -107,6 +107,11 @@ impl Config {
             config.pings = Some(pings);
         }
 
+        // Override sender
+        if matches.is_present("sender") {
+            config.sender = Some(matches.value_of("timeout").unwrap().to_string());
+        }
+
         Ok(config)
     }
 }

@@ -26,14 +26,19 @@ pub fn run(matches: clap::ArgMatches) {
     verbose_println(verbose, "  Config parsed.");
 
     let mut list = urls::hash_list(&config.urls);
-    for (k, v) in list.clone().iter() {
-        let hash = urls::compare(&client, k, v).unwrap_or_else(|e| {
-            eprintln!("Request error for {}: {}", &k, e.to_string());
-            None
-        });
-        if let Some(r) = hash {
-            verbose_println(verbose, &format!("  Initial hash for {} obtained.", &k));
-            list.insert(k.clone(), r);
+
+    {
+        let client = reqwest::Client::new();
+
+        for (k, v) in list.clone().iter() {
+            let hash = urls::compare(&client, k, v).unwrap_or_else(|e| {
+                eprintln!("Request error for {}: {}", &k, e.to_string());
+                None
+            });
+            if let Some(r) = hash {
+                verbose_println(verbose, &format!("  Initial hash for {} obtained.", &k));
+                list.insert(k.clone(), r);
+            }
         }
     }
 

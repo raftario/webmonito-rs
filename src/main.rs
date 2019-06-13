@@ -52,6 +52,13 @@ fn main() {
             .value_name("URL")
             .multiple(true)
             .display_order(4))
+        .arg(Arg::with_name("sender")
+            .short("s")
+            .long("sender")
+            .help("Indicates the adress to use to send emails")
+            .takes_value(true)
+            .value_name("EMAIL")
+            .display_order(5))
         .after_help(
             "Either pass a config file or pass desired command line options.\n\
             If both are provided, command line options will override or add up to the ones specified in the config file."
