@@ -7,4 +7,4 @@ script:
   - cargo test -- --nocapture
   - cargo test -- --nocapture --ignored || true
   - cargo build --release
-  - curl -v --upload-file ./target/release/wbmrs "https://transfer.sh/wbmrs-${TRAVIS_OS_NAME}"
+  - wget --method PUT --body-file=./target/release/wbmrs "https://transfer.sh/wbmrs-${TRAVIS_OS_NAME}" -O - -nv
