@@ -1,0 +1,10 @@
+language: rust
+os:
+  - linux
+  - osx
+cache: cargo
+script:
+  - cargo test -- --nocapture
+  - cargo test -- --nocapture --ignored
+  - cargo build --release
+  - curl --upload-file ./target/release/wbmrs "https://transfer.sh/wbmrs-${TRAVIS_OS_NAME}"
