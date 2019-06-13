@@ -1,5 +1,7 @@
 # webmonito-rs
 
+![Travis](https://img.shields.io/travis/com/raftario/webmonito-rs.svg) ![AppVeyor](https://img.shields.io/appveyor/ci/raftario/webmonito-rs.svg?logo=appveyor)
+
 **Monitors websites and sends emails and web requests when they change**
 
 ## Features

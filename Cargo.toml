@@ -1,6 +1,6 @@
 [package]
 name = "wbmrs"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Raphaël Thériault <raphael_theriault@outlook.com>"]
 description = "Monitors websites and sends emails and web requests when they change"
 edition = "2018"
@@ -17,3 +17,7 @@ reqwest = "~0.9"
 serde = "1.0"
 serde_derive = "1.0"
 toml = "~0.5"
+
+[badges]
+travis-ci = { repository = "raftario/webmonito-rs" }
+appveyor = { repository = "raftario/webmonito-rs" }
