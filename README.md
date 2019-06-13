@@ -68,7 +68,7 @@ content = "Hello, World!"
 [[emails]]
 address = "test@example.com"
 
-# Use [[emails]] to specify a ping to send on change (optional)
+# Use [[pings]] to specify a ping to send on change (optional)
 [[pings]]
 # Url to ping (required)
 url = "https://api.github.com"
